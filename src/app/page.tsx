@@ -115,9 +115,14 @@ export default function LandingPage() {
 
       {/* Hero — Full screen immersive */}
       <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background layers */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#071510] via-[#0D1F18] to-[#071510]" />
-        <motion.div style={{ y: heroY }} className="absolute inset-0">
+        {/* Background image — using CSS for better performance */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: 'url(/hero-bg.webp)' }}
+        />
+        <div className="absolute inset-0 bg-[#071510]/50" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#071510]/30 via-transparent to-[#071510]" />
+        <motion.div style={{ y: heroY }} className="absolute inset-0 pointer-events-none">
           {/* Radial glow */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#1F8A70]/5 rounded-full blur-[120px]" />
           <div className="absolute top-1/3 left-1/4 w-[300px] h-[300px] bg-[#D4AF37]/5 rounded-full blur-[80px]" />
