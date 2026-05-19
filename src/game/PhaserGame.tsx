@@ -3,16 +3,17 @@
 import { useEffect, useRef, useState } from 'react'
 
 interface PhaserGameProps {
-  onArtifactInteract: () => void
+  onArtifactInteract: (artifactId: string) => void
+  onNaraInteract?: () => void
 }
 
-export default function PhaserGame({ onArtifactInteract }: PhaserGameProps) {
+export default function PhaserGame({ onArtifactInteract, onNaraInteract }: PhaserGameProps) {
   const gameRef = useRef<HTMLDivElement>(null)
   const phaserGameRef = useRef<Phaser.Game | null>(null)
   const [loading, setLoading] = useState(true)
   const [progress, setProgress] = useState('Memuat engine...')
-  const callbackRef = useRef(onArtifactInteract)
-  callbackRef.current = onArtifactInteract
+  const callbacksRef = useRef({ onArtifactInteract, onNaraInteract })
+  callbacksRef.current = { onArtifactInteract, onNaraInteract }
 
   useEffect(() => {
     let destroyed = false
@@ -33,7 +34,7 @@ export default function PhaserGame({ onArtifactInteract }: PhaserGameProps) {
         parent: gameRef.current,
         width: 800,
         height: 500,
-        backgroundColor: '#0f0f23',
+        backgroundColor: '#071510',
         physics: {
           default: 'arcade',
           arcade: {
@@ -59,13 +60,15 @@ export default function PhaserGame({ onArtifactInteract }: PhaserGameProps) {
         if (destroyed) return
         const scene = game.scene.getScene('MuseumScene')
         if (scene) {
-          scene.scene.restart({ onArtifactInteract: () => callbackRef.current() })
+          scene.scene.restart({
+            onArtifactInteract: (id: string) => callbacksRef.current.onArtifactInteract(id),
+            onNaraInteract: () => callbacksRef.current.onNaraInteract?.(),
+          })
         }
         setLoading(false)
       })
     }
 
-    // Small delay to let the page render first
     const timer = setTimeout(initPhaser, 100)
 
     return () => {
@@ -81,14 +84,22 @@ export default function PhaserGame({ onArtifactInteract }: PhaserGameProps) {
   return (
     <div className="relative w-full max-w-[800px] mx-auto">
       {loading && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#0f0f23] rounded-lg z-10 gap-3">
-          <div className="w-8 h-8 border-2 border-[#D4AF37]/30 border-t-[#D4AF37] rounded-full animate-spin" />
-          <p className="text-[#B8AFA3] text-sm animate-pulse">{progress}</p>
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#071510] rounded-2xl z-10 gap-4">
+          <div className="relative">
+            <div className="w-12 h-12 border-2 border-[#1F8A70]/20 border-t-[#1F8A70] rounded-full animate-spin" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-4 h-4 bg-[#D4AF37]/40 rounded-full animate-pulse" />
+            </div>
+          </div>
+          <div className="text-center">
+            <p className="text-[#F8F1E7] text-sm font-medium">{progress}</p>
+            <p className="text-[#B8AFA3] text-xs mt-1">Museum sedang disiapkan...</p>
+          </div>
         </div>
       )}
       <div
         ref={gameRef}
-        className="w-full aspect-[8/5] rounded-lg overflow-hidden border border-[#D4AF37]/20"
+        className="w-full aspect-[8/5] rounded-2xl overflow-hidden border border-[#1F8A70]/20 shadow-xl shadow-black/30"
       />
     </div>
   )

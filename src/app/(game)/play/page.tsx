@@ -1,30 +1,44 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useCallback } from 'react'
 import dynamic from 'next/dynamic'
 import DialogueModal from '@/components/dialogue/DialogueModal'
 import GameOverlay from '@/components/game/GameOverlay'
 import RewardPopup from '@/components/game/RewardPopup'
 import VirtualJoystick from '@/components/game/VirtualJoystick'
+import NaraDialogue from '@/components/game/NaraDialogue'
+import { useGameStore } from '@/stores/gameStore'
+import { gameEvents, GAME_EVENTS } from '@/game/events'
 
 const PhaserGame = dynamic(() => import('@/game/PhaserGame'), { ssr: false })
 
 export default function PlayPage() {
-  const [dialogueOpen, setDialogueOpen] = useState(false)
-  const [currentArtifactId] = useState('keris-jawa')
-  const [reward, setReward] = useState<{ type: string; value: string } | null>(null)
+  const {
+    dialogueOpen, currentArtifactId, notifications,
+    naraDialogueOpen, naraMessage,
+    openDialogue, closeDialogue, showNara, hideNara, pushNotification,
+  } = useGameStore()
 
-  const handleArtifactInteract = useCallback(() => {
-    setDialogueOpen(true)
-  }, [])
+  const handleArtifactInteract = useCallback((artifactId: string) => {
+    openDialogue(artifactId)
+  }, [openDialogue])
+
+  const handleNaraInteract = useCallback(() => {
+    showNara('Halo, Relic Keeper! Museum ini menyimpan banyak artefak yang menunggu untuk menceritakan kisahnya. Dekati artefak yang bercahaya dan tekan E untuk berbicara dengannya. Selesaikan quest untuk membuka ruangan baru!')
+  }, [showNara])
 
   const handleCloseDialogue = () => {
-    setDialogueOpen(false)
+    closeDialogue()
+    gameEvents.emit(GAME_EVENTS.CLOSE_DIALOG)
+  }
+
+  const handleCloseNara = () => {
+    hideNara()
+    gameEvents.emit(GAME_EVENTS.CLOSE_DIALOG)
   }
 
   const handleReward = (type: string, value: string) => {
-    setReward({ type, value })
-    setTimeout(() => setReward(null), 3000)
+    pushNotification(type as 'xp' | 'badge' | 'fragment', value)
   }
 
   return (
@@ -33,23 +47,26 @@ export default function PlayPage() {
       <GameOverlay />
 
       {/* Phaser Game Canvas */}
-      <div className="flex-1 flex items-center justify-center p-4 game-container">
-        <PhaserGame onArtifactInteract={handleArtifactInteract} />
+      <div className="flex-1 flex items-center justify-center p-2 md:p-4 game-container">
+        <PhaserGame
+          onArtifactInteract={handleArtifactInteract}
+          onNaraInteract={handleNaraInteract}
+        />
       </div>
 
       {/* Mobile Controls */}
       <VirtualJoystick />
       <div className="md:hidden fixed bottom-6 right-6 z-30">
         <button
-          onClick={handleArtifactInteract}
-          className="w-14 h-14 bg-[#D4AF37] rounded-full flex items-center justify-center text-[#071510] font-bold text-lg shadow-lg shadow-[#D4AF37]/30 active:scale-90 transition-transform"
+          onClick={() => handleArtifactInteract('keris-jawa')}
+          className="w-14 h-14 bg-[#D4AF37] rounded-full flex items-center justify-center text-[#071510] font-bold text-lg shadow-lg shadow-[#D4AF37]/30 active:scale-90 transition-transform border-2 border-[#D4AF37]/60"
         >
           E
         </button>
       </div>
 
       {/* Dialogue Modal */}
-      {dialogueOpen && (
+      {dialogueOpen && currentArtifactId && (
         <DialogueModal
           artifactId={currentArtifactId}
           onClose={handleCloseDialogue}
@@ -57,8 +74,17 @@ export default function PlayPage() {
         />
       )}
 
-      {/* Reward Popup */}
-      {reward && <RewardPopup type={reward.type} value={reward.value} />}
+      {/* Nara Dialogue */}
+      {naraDialogueOpen && naraMessage && (
+        <NaraDialogue message={naraMessage} onClose={handleCloseNara} />
+      )}
+
+      {/* Reward Notifications */}
+      <div className="fixed bottom-28 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2">
+        {notifications.map((n) => (
+          <RewardPopup key={n.id} type={n.type} value={n.value} />
+        ))}
+      </div>
     </div>
   )
 }
