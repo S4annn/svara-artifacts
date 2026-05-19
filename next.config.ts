@@ -1,7 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Optimize Phaser.js bundling
+  serverExternalPackages: ['phaser'],
+  experimental: {
+    optimizePackageImports: ['lucide-react', 'framer-motion'],
+  },
 };
 
 export default nextConfig;
