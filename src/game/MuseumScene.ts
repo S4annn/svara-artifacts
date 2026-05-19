@@ -44,6 +44,10 @@ export class MuseumScene extends Phaser.Scene {
     this.onNaraInteract = data.onNaraInteract
   }
 
+  preload() {
+    this.load.image('player-sprite', '/sprites/player.png')
+  }
+
   create() {
     const { width, height } = this.scale
 
@@ -135,14 +139,14 @@ export class MuseumScene extends Phaser.Scene {
       ease: 'Sine.easeInOut',
     })
 
-    // Player — character with body + head
-    this.player = this.add.container(width / 2, height - 80)
-    const pBody = this.add.rectangle(0, 0, 20, 24, 0x38bdf8)
-    const pHead = this.add.circle(0, -16, 8, 0x7dd3fc)
-    this.player.add([pBody, pHead])
+    // Player — custom sprite
+    const playerSprite = this.add.image(0, 0, 'player-sprite')
+    playerSprite.setDisplaySize(32, 32)
+    this.player = this.add.container(width / 2, height - 80, [playerSprite])
     this.physics.add.existing(this.player)
     this.playerBody = this.player.body as Phaser.Physics.Arcade.Body
-    this.playerBody.setSize(20, 24)
+    this.playerBody.setSize(24, 28)
+    this.playerBody.setOffset(-12, -14)
     this.playerBody.setCollideWorldBounds(true)
 
     // Collisions
