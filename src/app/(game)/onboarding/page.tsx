@@ -37,7 +37,7 @@ export default function OnboardingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0F0C0A] flex items-center justify-center px-4">
+    <div className="min-h-screen bg-[#071510] flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         {/* Progress dots */}
         <div className="flex justify-center gap-2 mb-8">
@@ -45,7 +45,7 @@ export default function OnboardingPage() {
             <div
               key={i}
               className={`w-2.5 h-2.5 rounded-full transition-colors ${
-                i <= step ? 'bg-[#D4AF37]' : 'bg-[#1F1A15]'
+                i <= step ? 'bg-[#D4AF37]' : 'bg-[#0D1F18]'
               }`}
             />
           ))}
@@ -72,7 +72,7 @@ export default function OnboardingPage() {
                     className={`p-4 rounded-xl border text-left transition-all ${
                       selectedRole === role.id
                         ? 'border-[#D4AF37] bg-[#D4AF37]/10'
-                        : 'border-[#D4AF37]/10 bg-[#1F1A15] hover:border-[#D4AF37]/30'
+                        : 'border-[#D4AF37]/10 bg-[#0D1F18] hover:border-[#D4AF37]/30'
                     }`}
                   >
                     <role.icon className={`w-6 h-6 mb-2 ${selectedRole === role.id ? 'text-[#D4AF37]' : 'text-[#B8AFA3]'}`} />
@@ -84,7 +84,7 @@ export default function OnboardingPage() {
               <button
                 onClick={() => setStep(1)}
                 disabled={!selectedRole}
-                className="w-full bg-[#D4AF37] text-[#0F0C0A] py-2.5 rounded-lg font-semibold hover:bg-[#e6c44a] transition-colors disabled:opacity-30"
+                className="w-full bg-[#D4AF37] text-[#071510] py-2.5 rounded-lg font-semibold hover:bg-[#e6c44a] transition-colors disabled:opacity-30"
               >
                 Lanjut
               </button>
@@ -129,7 +129,7 @@ export default function OnboardingPage() {
                 <button
                   onClick={() => setStep(2)}
                   disabled={!selectedAvatar}
-                  className="flex-1 bg-[#D4AF37] text-[#0F0C0A] py-2.5 rounded-lg font-semibold hover:bg-[#e6c44a] transition-colors disabled:opacity-30"
+                  className="flex-1 bg-[#D4AF37] text-[#071510] py-2.5 rounded-lg font-semibold hover:bg-[#e6c44a] transition-colors disabled:opacity-30"
                 >
                   Lanjut
                 </button>
@@ -148,7 +148,7 @@ export default function OnboardingPage() {
               <div className="text-center">
                 <h2 className="text-2xl font-bold text-[#F8F1E7]">Nara Menyambutmu</h2>
               </div>
-              <div className="bg-[#1F1A15] border border-[#D4AF37]/20 rounded-xl p-5">
+              <div className="bg-[#0D1F18] border border-[#D4AF37]/20 rounded-xl p-5">
                 <div className="flex items-start gap-3">
                   <div className="w-10 h-10 bg-[#D4AF37]/20 rounded-full flex items-center justify-center shrink-0">
                     <span className="text-[#D4AF37] text-sm font-bold">N</span>
@@ -163,14 +163,14 @@ export default function OnboardingPage() {
                   </div>
                 </div>
               </div>
-              <div className="bg-[#15110E] border border-[#1F8A70]/30 rounded-lg p-3">
+              <div className="bg-[#071510] border border-[#1F8A70]/30 rounded-lg p-3">
                 <p className="text-xs text-[#1F8A70] font-medium mb-1">Quest Pertama</p>
                 <p className="text-sm text-[#F8F1E7]">Temui Keris Jawa dan tanyakan asal-usulnya.</p>
               </div>
               <button
                 onClick={handleComplete}
                 disabled={loading}
-                className="w-full bg-[#D4AF37] text-[#0F0C0A] py-3 rounded-lg font-semibold hover:bg-[#e6c44a] transition-colors disabled:opacity-50 text-lg"
+                className="w-full bg-[#D4AF37] text-[#071510] py-3 rounded-lg font-semibold hover:bg-[#e6c44a] transition-colors disabled:opacity-50 text-lg"
               >
                 {loading ? 'Memuat...' : 'Mulai Petualangan'}
               </button>

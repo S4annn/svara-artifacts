@@ -66,7 +66,7 @@ export default function QuizChallenge({ artifactName, questions, onComplete, onC
         animate={{ opacity: 1, scale: 1 }}
         className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
       >
-        <div className="bg-[#1F1A15] border border-[#D4AF37]/20 rounded-xl p-8 max-w-sm w-full text-center">
+        <div className="bg-[#0D1F18] border border-[#D4AF37]/20 rounded-xl p-8 max-w-sm w-full text-center">
           <div className="w-16 h-16 bg-[#D4AF37]/20 rounded-full flex items-center justify-center mx-auto mb-4">
             <Trophy className={`w-8 h-8 ${isPerfect ? 'text-[#D4AF37]' : 'text-[#B8AFA3]'}`} />
           </div>
@@ -77,7 +77,7 @@ export default function QuizChallenge({ artifactName, questions, onComplete, onC
           {!isPerfect && <p className="text-sm text-[#B8AFA3] mb-4">+{finalScore * 20} XP</p>}
           <button
             onClick={onClose}
-            className="w-full bg-[#D4AF37] text-[#0F0C0A] py-2.5 rounded-lg font-semibold hover:bg-[#e6c44a] transition-colors"
+            className="w-full bg-[#D4AF37] text-[#071510] py-2.5 rounded-lg font-semibold hover:bg-[#e6c44a] transition-colors"
           >
             Kembali ke Museum
           </button>
@@ -92,7 +92,7 @@ export default function QuizChallenge({ artifactName, questions, onComplete, onC
       animate={{ opacity: 1 }}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
     >
-      <div className="bg-[#1F1A15] border border-[#D4AF37]/20 rounded-xl p-6 max-w-lg w-full">
+      <div className="bg-[#0D1F18] border border-[#D4AF37]/20 rounded-xl p-6 max-w-lg w-full">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <p className="text-xs text-[#D4AF37]">Quiz: {artifactName}</p>
@@ -100,7 +100,7 @@ export default function QuizChallenge({ artifactName, questions, onComplete, onC
         </div>
 
         {/* Progress bar */}
-        <div className="w-full h-1 bg-[#15110E] rounded-full mb-6 overflow-hidden">
+        <div className="w-full h-1 bg-[#071510] rounded-full mb-6 overflow-hidden">
           <div
             className="h-full bg-[#D4AF37] rounded-full transition-all duration-300"
             style={{ width: `${((currentIndex + 1) / questions.length) * 100}%` }}
@@ -116,7 +116,7 @@ export default function QuizChallenge({ artifactName, questions, onComplete, onC
             const isSelected = selectedAnswer === opt.key
             const isCorrect = opt.key === current.correct_answer
             let borderColor = 'border-[#D4AF37]/10'
-            let bgColor = 'bg-[#15110E]'
+            let bgColor = 'bg-[#071510]'
 
             if (showResult) {
               if (isCorrect) {
@@ -149,7 +149,7 @@ export default function QuizChallenge({ artifactName, questions, onComplete, onC
 
         {/* Explanation */}
         {showResult && current.explanation && (
-          <div className="bg-[#15110E] border border-[#D4AF37]/10 rounded-lg p-3 mb-4">
+          <div className="bg-[#071510] border border-[#D4AF37]/10 rounded-lg p-3 mb-4">
             <p className="text-xs text-[#B8AFA3]">{current.explanation}</p>
           </div>
         )}
@@ -158,7 +158,7 @@ export default function QuizChallenge({ artifactName, questions, onComplete, onC
         {showResult && (
           <button
             onClick={handleNext}
-            className="w-full bg-[#D4AF37] text-[#0F0C0A] py-2.5 rounded-lg font-semibold hover:bg-[#e6c44a] transition-colors flex items-center justify-center gap-2"
+            className="w-full bg-[#D4AF37] text-[#071510] py-2.5 rounded-lg font-semibold hover:bg-[#e6c44a] transition-colors flex items-center justify-center gap-2"
           >
             {currentIndex < questions.length - 1 ? 'Pertanyaan Berikutnya' : 'Lihat Hasil'}
             <ArrowRight className="w-4 h-4" />

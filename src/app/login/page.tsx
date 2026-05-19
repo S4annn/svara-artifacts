@@ -61,14 +61,14 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0F0C0A] px-4">
+    <div className="min-h-screen flex items-center justify-center bg-[#071510] px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <Link href="/" className="text-2xl font-bold text-[#D4AF37]">RelicVerse</Link>
           <p className="text-[#B8AFA3] text-sm mt-2">Masuk untuk melanjutkan petualangan</p>
         </div>
 
-        <div className="bg-[#1F1A15] border border-[#D4AF37]/10 rounded-xl p-6 space-y-4">
+        <div className="bg-[#0D1F18] border border-[#D4AF37]/10 rounded-xl p-6 space-y-4">
           {error && (
             <div className="bg-[#6B1F1F]/30 border border-[#6B1F1F] text-red-300 text-sm rounded-lg p-3">
               {error}
@@ -80,7 +80,7 @@ export default function LoginPage() {
             type="button"
             onClick={handleGoogleLogin}
             disabled={googleLoading || loading}
-            className="w-full flex items-center justify-center gap-3 bg-[#15110E] border border-[#D4AF37]/20 py-2.5 rounded-lg text-[#F8F1E7] hover:border-[#D4AF37]/40 transition-colors disabled:opacity-50"
+            className="w-full flex items-center justify-center gap-3 bg-[#071510] border border-[#D4AF37]/20 py-2.5 rounded-lg text-[#F8F1E7] hover:border-[#D4AF37]/40 transition-colors disabled:opacity-50"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -107,7 +107,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full bg-[#15110E] border border-[#D4AF37]/20 rounded-lg px-4 py-2.5 text-[#F8F1E7] placeholder-[#B8AFA3]/50 focus:outline-none focus:border-[#D4AF37]/60 transition-colors"
+                className="w-full bg-[#071510] border border-[#D4AF37]/20 rounded-lg px-4 py-2.5 text-[#F8F1E7] placeholder-[#B8AFA3]/50 focus:outline-none focus:border-[#D4AF37]/60 transition-colors"
                 placeholder="email@example.com"
               />
             </div>
@@ -124,7 +124,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full bg-[#15110E] border border-[#D4AF37]/20 rounded-lg px-4 py-2.5 text-[#F8F1E7] placeholder-[#B8AFA3]/50 focus:outline-none focus:border-[#D4AF37]/60 transition-colors"
+                className="w-full bg-[#071510] border border-[#D4AF37]/20 rounded-lg px-4 py-2.5 text-[#F8F1E7] placeholder-[#B8AFA3]/50 focus:outline-none focus:border-[#D4AF37]/60 transition-colors"
                 placeholder="••••••••"
               />
             </div>
@@ -132,7 +132,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading || googleLoading}
-              className="w-full bg-[#D4AF37] text-[#0F0C0A] py-2.5 rounded-lg font-semibold hover:bg-[#e6c44a] transition-colors disabled:opacity-50"
+              className="w-full bg-[#D4AF37] text-[#071510] py-2.5 rounded-lg font-semibold hover:bg-[#e6c44a] transition-colors disabled:opacity-50"
             >
               {loading ? 'Memuat...' : 'Masuk'}
             </button>

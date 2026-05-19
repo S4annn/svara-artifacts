@@ -25,12 +25,12 @@ const QUICK_CHOICES = [
   'Berikan petunjuk untuk quest ini',
 ]
 
-// Artifact data for offline/demo mode
-const ARTIFACT_DATA: Record<string, { name: string; greeting: string; tone: string }> = {
+const ARTIFACT_DATA: Record<string, { name: string; greeting: string; tone: string; origin: string }> = {
   'keris-jawa': {
     name: 'Keris Jawa',
     greeting: 'Aku adalah Keris Jawa. Jangan lihat aku hanya sebagai senjata, karena di lekuk bilahku tersimpan kisah kehormatan, pusaka, dan identitas budaya.',
-    tone: 'bijaksana',
+    tone: 'Bijaksana',
+    origin: 'Jawa',
   },
 }
 
@@ -73,7 +73,6 @@ export default function DialogueModal({ artifactId, onClose, onReward }: Dialogu
       const aiMsg: Message = { id: (Date.now() + 1).toString(), sender: 'ai', content: data.aiMessage }
       setMessages((prev) => [...prev, aiMsg])
 
-      // Handle rewards
       if (data.earnedXp) {
         onReward('xp', `+${data.earnedXp} XP`)
       }
@@ -102,35 +101,39 @@ export default function DialogueModal({ artifactId, onClose, onReward }: Dialogu
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+      className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/80 backdrop-blur-sm p-4"
     >
       <motion.div
-        initial={{ y: 50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        exit={{ y: 50, opacity: 0 }}
-        className="w-full max-w-lg bg-[#1F1A15] border border-[#D4AF37]/20 rounded-xl overflow-hidden flex flex-col max-h-[80vh]"
+        initial={{ y: 60, opacity: 0, scale: 0.95 }}
+        animate={{ y: 0, opacity: 1, scale: 1 }}
+        exit={{ y: 60, opacity: 0, scale: 0.95 }}
+        transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+        className="w-full max-w-lg bg-[#0D1F18] border border-[#1F8A70]/30 rounded-3xl overflow-hidden flex flex-col max-h-[85vh] shadow-2xl shadow-[#1F8A70]/10"
       >
-        {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-[#D4AF37]/10 bg-[#15110E]">
+        {/* Header — RPG style */}
+        <div className="flex items-center justify-between px-5 py-4 border-b border-[#1F8A70]/15 bg-gradient-to-r from-[#0D1F18] to-[#071510]">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-[#D4AF37]/20 rounded-full flex items-center justify-center">
+            <div className="w-11 h-11 bg-[#D4AF37]/15 rounded-xl flex items-center justify-center border border-[#D4AF37]/30">
               <Sparkles className="w-5 h-5 text-[#D4AF37]" />
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-[#F8F1E7]">{artifact.name}</h3>
-              <p className="text-xs text-[#B8AFA3]">Gaya: {artifact.tone}</p>
+              <h3 className="text-sm font-bold text-[#F8F1E7]">{artifact.name}</h3>
+              <div className="flex items-center gap-2 mt-0.5">
+                <span className="text-[10px] text-[#1F8A70] bg-[#1F8A70]/10 px-2 py-0.5 rounded-full">{artifact.tone}</span>
+                <span className="text-[10px] text-[#B8AFA3]">{artifact.origin}</span>
+              </div>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-[#D4AF37]/10 transition-colors"
+            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-[#1F8A70]/10 transition-colors"
           >
             <X className="w-4 h-4 text-[#B8AFA3]" />
           </button>
         </div>
 
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-3 min-h-[200px]">
+        {/* Messages — RPG dialogue style */}
+        <div className="flex-1 overflow-y-auto p-5 space-y-4 min-h-[200px]">
           <AnimatePresence>
             {messages.map((msg) => (
               <motion.div
@@ -140,12 +143,15 @@ export default function DialogueModal({ artifactId, onClose, onReward }: Dialogu
                 className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[80%] px-3 py-2 rounded-lg text-sm ${
+                  className={`max-w-[85%] px-4 py-3 rounded-2xl text-sm leading-relaxed ${
                     msg.sender === 'user'
-                      ? 'bg-[#D4AF37]/20 text-[#F8F1E7]'
-                      : 'bg-[#15110E] text-[#F8F1E7] border border-[#D4AF37]/10'
+                      ? 'bg-[#1F8A70]/20 text-[#F8F1E7] border border-[#1F8A70]/20 rounded-br-md'
+                      : 'bg-[#071510] text-[#F8F1E7] border border-[#D4AF37]/10 rounded-bl-md'
                   }`}
                 >
+                  {msg.sender === 'ai' && (
+                    <p className="text-[10px] text-[#D4AF37] font-bold mb-1">{artifact.name}</p>
+                  )}
                   {msg.content}
                 </div>
               </motion.div>
@@ -153,8 +159,12 @@ export default function DialogueModal({ artifactId, onClose, onReward }: Dialogu
           </AnimatePresence>
           {loading && (
             <div className="flex justify-start">
-              <div className="bg-[#15110E] border border-[#D4AF37]/10 px-3 py-2 rounded-lg">
-                <span className="text-[#B8AFA3] text-sm animate-pulse">Artefak sedang berpikir...</span>
+              <div className="bg-[#071510] border border-[#D4AF37]/10 px-4 py-3 rounded-2xl rounded-bl-md">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-1.5 h-1.5 bg-[#D4AF37] rounded-full animate-bounce" />
+                  <div className="w-1.5 h-1.5 bg-[#D4AF37] rounded-full animate-bounce [animation-delay:0.1s]" />
+                  <div className="w-1.5 h-1.5 bg-[#D4AF37] rounded-full animate-bounce [animation-delay:0.2s]" />
+                </div>
               </div>
             </div>
           )}
@@ -162,35 +172,35 @@ export default function DialogueModal({ artifactId, onClose, onReward }: Dialogu
         </div>
 
         {/* Quick Choices */}
-        <div className="px-4 pb-2 flex gap-2 overflow-x-auto">
+        <div className="px-5 pb-2 flex gap-2 overflow-x-auto scrollbar-none">
           {QUICK_CHOICES.slice(0, 4).map((choice) => (
             <button
               key={choice}
               onClick={() => sendMessage(choice)}
               disabled={loading}
-              className="whitespace-nowrap text-xs bg-[#15110E] border border-[#D4AF37]/20 text-[#D4AF37] px-3 py-1.5 rounded-full hover:bg-[#D4AF37]/10 transition-colors disabled:opacity-50 shrink-0"
+              className="whitespace-nowrap text-xs bg-[#071510] border border-[#1F8A70]/20 text-[#1F8A70] px-3 py-1.5 rounded-full hover:bg-[#1F8A70]/10 hover:border-[#1F8A70]/40 transition-all disabled:opacity-40 shrink-0"
             >
               {choice}
             </button>
           ))}
         </div>
 
-        {/* Input */}
-        <form onSubmit={handleSubmit} className="p-3 border-t border-[#D4AF37]/10 flex gap-2">
+        {/* Input — game style */}
+        <form onSubmit={handleSubmit} className="p-4 border-t border-[#1F8A70]/15 flex gap-2 bg-[#071510]/50">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Tanyakan sesuatu..."
+            placeholder="Tanyakan sesuatu kepada artefak..."
             disabled={loading}
-            className="flex-1 bg-[#15110E] border border-[#D4AF37]/20 rounded-lg px-3 py-2 text-sm text-[#F8F1E7] placeholder-[#B8AFA3]/50 focus:outline-none focus:border-[#D4AF37]/50 disabled:opacity-50"
+            className="flex-1 bg-[#071510] border border-[#1F8A70]/20 rounded-xl px-4 py-2.5 text-sm text-[#F8F1E7] placeholder-[#B8AFA3]/40 focus:outline-none focus:border-[#1F8A70]/50 focus:ring-1 focus:ring-[#1F8A70]/20 disabled:opacity-50 transition-all"
           />
           <button
             type="submit"
             disabled={loading || !input.trim()}
-            className="w-9 h-9 bg-[#D4AF37] rounded-lg flex items-center justify-center hover:bg-[#e6c44a] transition-colors disabled:opacity-50"
+            className="w-10 h-10 bg-[#1F8A70] rounded-xl flex items-center justify-center hover:bg-[#1F8A70]/80 transition-colors disabled:opacity-40 disabled:hover:bg-[#1F8A70]"
           >
-            <Send className="w-4 h-4 text-[#0F0C0A]" />
+            <Send className="w-4 h-4 text-[#F8F1E7]" />
           </button>
         </form>
       </motion.div>

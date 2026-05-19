@@ -63,7 +63,7 @@ export default function AdminPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-[#0F0C0A] p-6">
+    <div className="min-h-screen bg-[#071510] p-6">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -75,15 +75,15 @@ export default function AdminPage() {
 
         {/* Stats */}
         <div className="grid grid-cols-3 gap-4 mb-8">
-          <div className="bg-[#1F1A15] border border-[#D4AF37]/10 rounded-lg p-4">
+          <div className="bg-[#0D1F18] border border-[#D4AF37]/10 rounded-lg p-4">
             <p className="text-xs text-[#B8AFA3]">Total Users</p>
             <p className="text-2xl font-bold text-[#F8F1E7]">{stats.users}</p>
           </div>
-          <div className="bg-[#1F1A15] border border-[#D4AF37]/10 rounded-lg p-4">
+          <div className="bg-[#0D1F18] border border-[#D4AF37]/10 rounded-lg p-4">
             <p className="text-xs text-[#B8AFA3]">Total Chats</p>
             <p className="text-2xl font-bold text-[#F8F1E7]">{stats.chats}</p>
           </div>
-          <div className="bg-[#1F1A15] border border-[#D4AF37]/10 rounded-lg p-4">
+          <div className="bg-[#0D1F18] border border-[#D4AF37]/10 rounded-lg p-4">
             <p className="text-xs text-[#B8AFA3]">Total Artifacts</p>
             <p className="text-2xl font-bold text-[#F8F1E7]">{stats.artifacts}</p>
           </div>
@@ -97,8 +97,8 @@ export default function AdminPage() {
               onClick={() => setTab(t.key)}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
                 tab === t.key
-                  ? 'bg-[#D4AF37] text-[#0F0C0A]'
-                  : 'bg-[#1F1A15] text-[#B8AFA3] hover:text-[#F8F1E7]'
+                  ? 'bg-[#D4AF37] text-[#071510]'
+                  : 'bg-[#0D1F18] text-[#B8AFA3] hover:text-[#F8F1E7]'
               }`}
             >
               <t.icon className="w-4 h-4" />
@@ -108,10 +108,10 @@ export default function AdminPage() {
         </div>
 
         {/* Content */}
-        <div className="bg-[#1F1A15] border border-[#D4AF37]/10 rounded-xl p-4">
+        <div className="bg-[#0D1F18] border border-[#D4AF37]/10 rounded-xl p-4">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-[#F8F1E7] capitalize">{tab}</h2>
-            <button className="flex items-center gap-1 bg-[#D4AF37] text-[#0F0C0A] px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-[#e6c44a]">
+            <button className="flex items-center gap-1 bg-[#D4AF37] text-[#071510] px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-[#e6c44a]">
               <Plus className="w-4 h-4" /> Tambah
             </button>
           </div>
@@ -125,7 +125,7 @@ export default function AdminPage() {
               {items.map((item) => (
                 <div
                   key={item.id as string}
-                  className="flex items-center justify-between bg-[#15110E] border border-[#D4AF37]/5 rounded-lg px-4 py-3"
+                  className="flex items-center justify-between bg-[#071510] border border-[#D4AF37]/5 rounded-lg px-4 py-3"
                 >
                   <div>
                     <p className="text-sm font-medium text-[#F8F1E7]">

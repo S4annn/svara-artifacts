@@ -55,7 +55,7 @@ export default function VirtualJoystick() {
     <div className="md:hidden fixed bottom-6 left-6 z-30">
       <div
         ref={joystickRef}
-        className="w-20 h-20 bg-[#1F1A15]/80 border border-[#D4AF37]/30 rounded-full flex items-center justify-center touch-none"
+        className="w-20 h-20 bg-[#0D1F18]/80 border border-[#D4AF37]/30 rounded-full flex items-center justify-center touch-none"
         onTouchStart={(e) => {
           const t = e.touches[0]
           handleStart(t.clientX, t.clientY)

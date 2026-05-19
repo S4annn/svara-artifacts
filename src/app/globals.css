@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0F0C0A;
+  --background: #071510;
   --foreground: #F8F1E7;
-  --museum-dark: #15110E;
-  --card-dark: #1F1A15;
+  --museum-dark: #0D1F18;
+  --card-dark: #132B22;
   --gold: #D4AF37;
   --bronze: #A97142;
   --cream: #F8F1E7;
@@ -42,11 +42,20 @@ body {
   background: var(--museum-dark);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--bronze);
+  background: var(--emerald);
   border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold);
 }
 
 /* Game canvas responsive */
 .game-container canvas {
-  border-radius: 8px;
+  border-radius: 12px;
+}
+
+/* Selection color */
+::selection {
+  background: rgba(31, 138, 112, 0.3);
+  color: var(--cream);
 }

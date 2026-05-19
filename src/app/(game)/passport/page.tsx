@@ -49,7 +49,7 @@ export default function PassportPage() {
 
   if (!profile) {
     return (
-      <div className="min-h-screen bg-[#0F0C0A] flex items-center justify-center">
+      <div className="min-h-screen bg-[#071510] flex items-center justify-center">
         <p className="text-[#B8AFA3] animate-pulse">Memuat passport...</p>
       </div>
     )
@@ -60,7 +60,7 @@ export default function PassportPage() {
   const xpProgress = ((profile.total_xp - prevLevelXp) / (nextLevelXp - prevLevelXp)) * 100
 
   return (
-    <div className="min-h-screen bg-[#0F0C0A] p-4">
+    <div className="min-h-screen bg-[#071510] p-4">
       <div className="max-w-md mx-auto">
         {/* Back button */}
         <button onClick={() => router.push('/play')} className="flex items-center gap-2 text-[#B8AFA3] hover:text-[#D4AF37] mb-6 text-sm">
@@ -71,7 +71,7 @@ export default function PassportPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-[#1F1A15] border border-[#D4AF37]/30 rounded-2xl overflow-hidden"
+          className="bg-[#0D1F18] border border-[#D4AF37]/30 rounded-2xl overflow-hidden"
         >
           {/* Header */}
           <div className="bg-gradient-to-r from-[#D4AF37]/20 to-[#A97142]/20 p-6 border-b border-[#D4AF37]/20">
@@ -95,7 +95,7 @@ export default function PassportPage() {
               <span>XP</span>
               <span>{profile.total_xp} / {nextLevelXp}</span>
             </div>
-            <div className="w-full h-2 bg-[#15110E] rounded-full overflow-hidden">
+            <div className="w-full h-2 bg-[#071510] rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${Math.min(xpProgress, 100)}%` }}
@@ -107,28 +107,28 @@ export default function PassportPage() {
 
           {/* Stats Grid */}
           <div className="grid grid-cols-2 gap-px bg-[#D4AF37]/10 p-px">
-            <div className="bg-[#1F1A15] p-4 flex items-center gap-3">
+            <div className="bg-[#0D1F18] p-4 flex items-center gap-3">
               <Trophy className="w-5 h-5 text-[#D4AF37]" />
               <div>
                 <p className="text-lg font-bold text-[#F8F1E7]">{badgeCount}</p>
                 <p className="text-xs text-[#B8AFA3]">Badge</p>
               </div>
             </div>
-            <div className="bg-[#1F1A15] p-4 flex items-center gap-3">
+            <div className="bg-[#0D1F18] p-4 flex items-center gap-3">
               <Puzzle className="w-5 h-5 text-[#1F8A70]" />
               <div>
                 <p className="text-lg font-bold text-[#F8F1E7]">{fragmentCount}</p>
                 <p className="text-xs text-[#B8AFA3]">Fragment</p>
               </div>
             </div>
-            <div className="bg-[#1F1A15] p-4 flex items-center gap-3">
+            <div className="bg-[#0D1F18] p-4 flex items-center gap-3">
               <Scroll className="w-5 h-5 text-[#A97142]" />
               <div>
                 <p className="text-lg font-bold text-[#F8F1E7]">{questCount}</p>
                 <p className="text-xs text-[#B8AFA3]">Quest</p>
               </div>
             </div>
-            <div className="bg-[#1F1A15] p-4 flex items-center gap-3">
+            <div className="bg-[#0D1F18] p-4 flex items-center gap-3">
               <Star className="w-5 h-5 text-[#D4AF37]" />
               <div>
                 <p className="text-lg font-bold text-[#F8F1E7]">{profile.streak_count}</p>
