@@ -77,12 +77,12 @@ export class MuseumScene extends Phaser.Scene {
 
   preload() {
     this.load.image('museum-hall', '/assets/maps/museum-hall.png')
-    this.load.image('keris-sprite', '/assets/sprites/artifacts/keris.png')
     // Player sprite sheets: 4 cols x 4 rows, 320x320 per frame (1280x1280 total)
     this.load.spritesheet('player-idle', '/sprites/player-idle.png', { frameWidth: 320, frameHeight: 320 })
     this.load.spritesheet('player-walk', '/sprites/player-walk.png', { frameWidth: 320, frameHeight: 320 })
-    // NPC Nara (static image for now)
-    this.load.image('nara-sprite', '/assets/sprites/npc/nara.png')
+    // NPC Nara sprite sheets: same format
+    this.load.spritesheet('nara-idle', '/assets/sprites/npc/nara-idle.png', { frameWidth: 320, frameHeight: 320 })
+    this.load.spritesheet('nara-walk', '/assets/sprites/npc/nara-walk.png', { frameWidth: 320, frameHeight: 320 })
   }
 
   create() {
@@ -146,32 +146,32 @@ export class MuseumScene extends Phaser.Scene {
     })
 
     // ═══════════════════════════════════════
-    // KERIS SPRITE
+    // KERIS SPRITE (removed - using glow indicator only)
     // ═══════════════════════════════════════
-    const keris = this.add.image(350, 380, 'keris-sprite')
-    keris.setDisplaySize(52, 52)
-    keris.setDepth(380)
 
     // ═══════════════════════════════════════
-    // NPC NARA (static image, scaled down)
+    // NPC NARA (animated sprite sheet, same format as player)
     // ═══════════════════════════════════════
-    const naraSprite = this.add.image(900, 730, 'nara-sprite')
-    naraSprite.setDisplaySize(72, 72)
+    this.anims.create({ key: 'nara-idle-down', frames: this.anims.generateFrameNumbers('nara-idle', { start: 0, end: 3 }), frameRate: 3, repeat: -1 })
+
+    const naraSprite = this.add.sprite(900, 730, 'nara-idle', 0)
+    naraSprite.setDisplaySize(80, 80)
     naraSprite.setDepth(730)
+    naraSprite.play('nara-idle-down')
 
     // Nara shadow
-    this.add.ellipse(900, 768, 34, 10, 0x000000, 0.3).setDepth(729)
+    this.add.ellipse(900, 770, 36, 12, 0x000000, 0.3).setDepth(729)
 
     // Nara name
-    this.add.text(900, 780, 'Nara', {
+    this.add.text(900, 782, 'Nara', {
       fontSize: '12px', color: '#1F8A70', fontFamily: 'sans-serif', fontStyle: 'bold',
     }).setOrigin(0.5).setDepth(781)
 
     // Nara bubble
-    const bubble = this.add.text(900, 685, '💬', { fontSize: '18px' }).setOrigin(0.5).setDepth(900)
+    const bubble = this.add.text(900, 682, '💬', { fontSize: '18px' }).setOrigin(0.5).setDepth(900)
     this.tweens.add({
       targets: bubble,
-      y: 680,
+      y: 677,
       duration: 1300,
       yoyo: true,
       repeat: -1,
@@ -194,35 +194,32 @@ export class MuseumScene extends Phaser.Scene {
     this.anims.create({ key: 'walk-right', frames: this.anims.generateFrameNumbers('player-walk', { start: 8, end: 11 }), frameRate: 8, repeat: -1 })
     this.anims.create({ key: 'walk-up', frames: this.anims.generateFrameNumbers('player-walk', { start: 12, end: 15 }), frameRate: 8, repeat: -1 })
 
-    // Player shadow
-    const playerShadow = this.add.ellipse(W / 2, H - 160, 40, 12, 0x000000, 0.35)
-    playerShadow.setDepth(H - 201)
-
-    // Player sprite (320x320 frames scaled to ~80px display)
-    const playerSprite = this.add.sprite(0, 0, 'player-idle', 0)
+    // Player sprite directly (no container — more reliable physics)
+    const playerSprite = this.physics.add.sprite(W / 2, H - 200, 'player-idle', 0)
     playerSprite.setDisplaySize(80, 80)
     playerSprite.play('idle-down')
-
-    this.player = this.add.container(W / 2, H - 200, [playerSprite])
-    this.player.setDepth(H - 200)
-
-    this.physics.add.existing(this.player)
-    this.playerBody = this.player.body as Phaser.Physics.Arcade.Body
+    playerSprite.setDepth(H - 200)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const body = this.playerBody as any
-    body.setSize(34, 20)
-    body.setOffset(-17, 14)
+    const body = playerSprite.body as any
+    body.setSize(100, 60)
+    body.setOffset(110, 200)
     body.setCollideWorldBounds(true)
 
-    // Store references for animation
-    (this.player as Phaser.GameObjects.Container & { sprite: Phaser.GameObjects.Sprite; shadow: Phaser.GameObjects.Ellipse }).sprite = playerSprite;
-    (this.player as Phaser.GameObjects.Container & { shadow: Phaser.GameObjects.Ellipse }).shadow = playerShadow
+    // Player shadow (separate, follows player in update)
+    const playerShadow = this.add.ellipse(W / 2, H - 160, 36, 10, 0x000000, 0.3)
+    playerShadow.setDepth(1)
+
+    // Store as class property
+    this.player = playerSprite as unknown as Phaser.GameObjects.Container
+    this.playerBody = body
+    // Store shadow reference on the sprite
+    ;(playerSprite as unknown as { shadow: Phaser.GameObjects.Ellipse }).shadow = playerShadow
 
     // Collisions
-    this.physics.add.collider(this.player, this.colliders)
+    this.physics.add.collider(playerSprite, this.colliders)
 
     // Camera follow (smooth)
-    this.cameras.main.startFollow(this.player, true, 0.06, 0.06)
+    this.cameras.main.startFollow(playerSprite, true, 0.08, 0.08)
 
     // ═══════════════════════════════════════
     // LIGHTING / VIGNETTE
@@ -338,28 +335,25 @@ export class MuseumScene extends Phaser.Scene {
     }
 
     // Player animation
-    const playerRef = this.player as Phaser.GameObjects.Container & { sprite: Phaser.GameObjects.Sprite; shadow: Phaser.GameObjects.Ellipse }
-    const sprite = playerRef.sprite
-    if (sprite) {
+    const sprite = this.player as unknown as Phaser.GameObjects.Sprite
+    if (sprite && sprite.play) {
       if (len > 0) {
-        // Determine dominant direction
         if (Math.abs(vx) > Math.abs(vy)) {
           sprite.play(vx < 0 ? 'walk-left' : 'walk-right', true)
         } else {
           sprite.play(vy < 0 ? 'walk-up' : 'walk-down', true)
         }
       } else {
-        // Idle — keep last direction
-        const currentAnim = sprite.anims.currentAnim?.key || 'walk-down'
-        const dir = currentAnim.replace('walk-', '')
+        const currentAnim = sprite.anims?.currentAnim?.key || 'walk-down'
+        const dir = currentAnim.replace('walk-', '').replace('idle-', '')
         sprite.play('idle-' + dir, true)
       }
     }
 
     // Update shadow position
-    const shadowRef = playerRef.shadow
+    const shadowRef = (sprite as unknown as { shadow?: Phaser.GameObjects.Ellipse }).shadow
     if (shadowRef) {
-      shadowRef.setPosition(this.player.x, this.player.y + 32)
+      shadowRef.setPosition(this.player.x, this.player.y + 35)
       shadowRef.setDepth(this.player.y + 27)
     }
 
