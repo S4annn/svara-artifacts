@@ -33,8 +33,8 @@ export default function PhaserGame({ onArtifactInteract, onNaraInteract }: Phase
         type: Phaser.AUTO,
         parent: gameRef.current,
         width: 800,
-        height: 500,
-        backgroundColor: '#071510',
+        height: 600,
+        backgroundColor: '#050f0b',
         physics: {
           default: 'arcade',
           arcade: {
@@ -99,7 +99,7 @@ export default function PhaserGame({ onArtifactInteract, onNaraInteract }: Phase
       )}
       <div
         ref={gameRef}
-        className="w-full aspect-[8/5] rounded-2xl overflow-hidden border border-[#1F8A70]/20 shadow-xl shadow-black/30"
+        className="w-full aspect-[4/3] rounded-2xl overflow-hidden border border-[#1F8A70]/20 shadow-xl shadow-black/30"
       />
     </div>
   )
