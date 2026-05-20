@@ -150,28 +150,26 @@ export class MuseumScene extends Phaser.Scene {
     // ═══════════════════════════════════════
 
     // ═══════════════════════════════════════
-    // NPC NARA (animated sprite sheet, same format as player)
+    // NPC NARA (single frame, facing down)
     // ═══════════════════════════════════════
-    this.anims.create({ key: 'nara-idle-down', frames: this.anims.generateFrameNumbers('nara-idle', { start: 0, end: 3 }), frameRate: 3, repeat: -1 })
-
     const naraSprite = this.add.sprite(900, 730, 'nara-idle', 0)
-    naraSprite.setDisplaySize(80, 80)
+    naraSprite.setDisplaySize(120, 120)
     naraSprite.setDepth(730)
-    naraSprite.play('nara-idle-down')
+    // Don't animate — just show frame 0 (facing down, idle)
 
     // Nara shadow
-    this.add.ellipse(900, 770, 36, 12, 0x000000, 0.3).setDepth(729)
+    this.add.ellipse(900, 790, 40, 12, 0x000000, 0.3).setDepth(729)
 
     // Nara name
-    this.add.text(900, 782, 'Nara', {
-      fontSize: '12px', color: '#1F8A70', fontFamily: 'sans-serif', fontStyle: 'bold',
-    }).setOrigin(0.5).setDepth(781)
+    this.add.text(900, 800, 'Nara', {
+      fontSize: '13px', color: '#1F8A70', fontFamily: 'sans-serif', fontStyle: 'bold',
+    }).setOrigin(0.5).setDepth(801)
 
     // Nara bubble
-    const bubble = this.add.text(900, 682, '💬', { fontSize: '18px' }).setOrigin(0.5).setDepth(900)
+    const bubble = this.add.text(900, 660, '💬', { fontSize: '20px' }).setOrigin(0.5).setDepth(900)
     this.tweens.add({
       targets: bubble,
-      y: 677,
+      y: 655,
       duration: 1300,
       yoyo: true,
       repeat: -1,
@@ -181,14 +179,13 @@ export class MuseumScene extends Phaser.Scene {
     // ═══════════════════════════════════════
     // PLAYER (using real idle/walk sprite sheets)
     // ═══════════════════════════════════════
-    // Idle animations (from player-idle.png: 4x4 grid, 320x320 per frame)
-    // Row 0: down, Row 1: left, Row 2: right, Row 3: up
-    this.anims.create({ key: 'idle-down', frames: this.anims.generateFrameNumbers('player-idle', { start: 0, end: 3 }), frameRate: 4, repeat: -1 })
-    this.anims.create({ key: 'idle-left', frames: this.anims.generateFrameNumbers('player-idle', { start: 4, end: 7 }), frameRate: 4, repeat: -1 })
-    this.anims.create({ key: 'idle-right', frames: this.anims.generateFrameNumbers('player-idle', { start: 8, end: 11 }), frameRate: 4, repeat: -1 })
-    this.anims.create({ key: 'idle-up', frames: this.anims.generateFrameNumbers('player-idle', { start: 12, end: 15 }), frameRate: 4, repeat: -1 })
+    // Idle animations — single frame per direction (like Stardew Valley standing still)
+    this.anims.create({ key: 'idle-down', frames: [{ key: 'player-idle', frame: 0 }], frameRate: 1, repeat: 0 })
+    this.anims.create({ key: 'idle-left', frames: [{ key: 'player-idle', frame: 4 }], frameRate: 1, repeat: 0 })
+    this.anims.create({ key: 'idle-right', frames: [{ key: 'player-idle', frame: 8 }], frameRate: 1, repeat: 0 })
+    this.anims.create({ key: 'idle-up', frames: [{ key: 'player-idle', frame: 12 }], frameRate: 1, repeat: 0 })
 
-    // Walk animations (from player-walk.png: 4x4 grid, 320x320 per frame)
+    // Walk animations — cycle through 4 frames per direction
     this.anims.create({ key: 'walk-down', frames: this.anims.generateFrameNumbers('player-walk', { start: 0, end: 3 }), frameRate: 8, repeat: -1 })
     this.anims.create({ key: 'walk-left', frames: this.anims.generateFrameNumbers('player-walk', { start: 4, end: 7 }), frameRate: 8, repeat: -1 })
     this.anims.create({ key: 'walk-right', frames: this.anims.generateFrameNumbers('player-walk', { start: 8, end: 11 }), frameRate: 8, repeat: -1 })
@@ -196,17 +193,17 @@ export class MuseumScene extends Phaser.Scene {
 
     // Player sprite directly (no container — more reliable physics)
     const playerSprite = this.physics.add.sprite(W / 2, H - 200, 'player-idle', 0)
-    playerSprite.setDisplaySize(80, 80)
+    playerSprite.setDisplaySize(120, 120)
     playerSprite.play('idle-down')
     playerSprite.setDepth(H - 200)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const body = playerSprite.body as any
-    body.setSize(100, 60)
-    body.setOffset(110, 200)
+    body.setSize(80, 40)
+    body.setOffset(120, 230)
     body.setCollideWorldBounds(true)
 
     // Player shadow (separate, follows player in update)
-    const playerShadow = this.add.ellipse(W / 2, H - 160, 36, 10, 0x000000, 0.3)
+    const playerShadow = this.add.ellipse(W / 2, H - 160, 40, 12, 0x000000, 0.3)
     playerShadow.setDepth(1)
 
     // Store as class property
